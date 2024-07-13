@@ -11,7 +11,7 @@ import exportToCsv from '../../js/exportToCsv';
 const Home: React.FC = () => {
   const [data, setData] = useState([]);
   const [stats, setStats] = useState([]);
-  const [quantity, setQuantity] = useState({ box: '', bak: '', sparepart: '' });
+  const [quantity, setQuantity] = useState({ box: 0, bak: 0, sparepart: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [csvData, setCsvData] = useState({ row: [], column: '' });

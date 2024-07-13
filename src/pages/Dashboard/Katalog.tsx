@@ -16,9 +16,9 @@ import Cookies from 'js-cookie';
 const Katalog: React.FC = () => {
   const [data, setData] = useState([]);
   const [quantity, setQuantity] = useState({
-    box: '',
-    bak: '',
-    sparepart: ''
+    box: 0,
+    bak: 0,
+    sparepart: 0
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,7 +27,13 @@ const Katalog: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BACKEND}/api/posts`);
+        const response = await axios.get(`${import.meta.env.VITE_API_BACKEND}/api/posts`, {
+          headers: {
+            'Cache-Control': 'no-cache',
+            Pragma: 'no-cache',
+            Expires: '0'
+          }
+        });
 
         setData(response.data);
         setQuantity({
