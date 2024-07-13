@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import Cookies from 'js-cookie';
 
 const Katalog: React.FC = () => {
   const [data, setData] = useState([]);
@@ -92,7 +93,11 @@ const Katalog: React.FC = () => {
       cancelButtonText: 'Batal'
     }).then(async (result) => {
       if (result.isConfirmed) {
+        const token = Cookies.get('access_token');
         await axios.delete(`${import.meta.env.VITE_API_BACKEND}/api/posts/${product.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
           withCredentials: true
         });
         Swal.fire('Sukses menghapus', '', 'success');

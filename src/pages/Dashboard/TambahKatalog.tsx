@@ -4,7 +4,7 @@ import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-
+import Cookies from 'js-cookie';
 // import 'dotenv/config'
 
 const FormLayout = () => {
@@ -19,7 +19,7 @@ const FormLayout = () => {
   const [formData, setFormData] = useState<any>({
     nama: 'Bak Levia MD100 Pickup',
     deskripsi: 'Pickup Anti Peluru',
-    kategori: 'bak',
+    kategori: '1',
     stok: '23',
     harga: '4500000',
     diskon: '340000',
@@ -63,12 +63,16 @@ const FormLayout = () => {
     });
 
     try {
+      const token = Cookies.get('access_token');
       const response = await axios.post(`${import.meta.env.VITE_API_BACKEND}/api/posts/`, data, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        withCredentials: true
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
+        }
+        // withCredentials: true
       });
+
+      console.log('File uploaded successfully:', response.data);
       setFormData({
         nama: '',
         deskripsi: '',
@@ -80,8 +84,6 @@ const FormLayout = () => {
         berat: ''
       });
       setSelectedFiles([]);
-
-      console.log('File uploaded successfully:', response.data);
       Swal.fire({
         text: `Sukses menambahkan ${response.data.nama}`,
         icon: 'success',

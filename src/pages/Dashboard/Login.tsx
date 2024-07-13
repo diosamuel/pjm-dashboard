@@ -14,16 +14,10 @@ const SignIn: React.FC = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_BACKEND}/api/auth/login`,
-        {
-          username,
-          password,
-        },
-        {
-          'ngrok-skip-browser-warning': '69420',
-        }
-      );
+      const response = await axios.post(`${import.meta.env.VITE_API_BACKEND}/api/auth/login`, {
+        username,
+        password
+      });
       login(response.data.token);
       navigate('/');
     } catch (err) {

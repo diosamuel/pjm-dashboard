@@ -5,6 +5,7 @@ import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import Cookies from 'js-cookie';
 
 // import 'dotenv/config'
 
@@ -22,14 +23,14 @@ const FormLayout = () => {
     harga: '',
     diskon: '',
     warna: '',
-    berat: '',
+    berat: ''
   });
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: value
     }));
   };
 
@@ -39,10 +40,9 @@ const FormLayout = () => {
         text: `Gambar tidak boleh lebih dari 5!`,
         icon: 'error',
         confirmButtonColor: 'green',
-        confirmButtonText: 'Mengerti',
+        confirmButtonText: 'Mengerti'
       });
     } else {
-      console.log(event.target.files);
       setSelectedFiles(event.target.files);
     }
   };
@@ -51,15 +51,9 @@ const FormLayout = () => {
     const urlToFile = async (urls) => {
       // urls is an array of image links
       const filePromises = urls.map(async (url) => {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_BACKEND}/image/${url}`,
-          {
-            responseType: 'blob',
-            headers: {
-              'ngrok-skip-browser-warning': '69420',
-            },
-          }
-        );
+        const response = await axios.get(`${import.meta.env.VITE_API_BACKEND}/image/${url}`, {
+          responseType: 'blob'
+        });
         const data = response.data;
         const metadata = { type: 'image/png' };
         const file = new File([data], `${url}.png`, metadata);
@@ -70,23 +64,10 @@ const FormLayout = () => {
     };
 
     const fetchData = async () => {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_BACKEND}/api/posts/${id}`,
-        {
-          headers: {
-            'ngrok-skip-browser-warning': '69420',
-          },
-        }
-      );
+      const response = await axios.get(`${import.meta.env.VITE_API_BACKEND}/api/posts/${id}`);
       let { kategori } = response.data;
       let resKategori =
-        kategori === 'bak'
-          ? 1
-          : kategori === 'box'
-          ? 2
-          : kategori === 'sparepart'
-          ? 3
-          : 0;
+        kategori === 'bak' ? 1 : kategori === 'box' ? 2 : kategori === 'sparepart' ? 3 : 0;
       let fileImage = await urlToFile(response.data.images);
       setSelectedFiles(fileImage);
       setFormData({ ...response.data, kategori: resKategori });
@@ -106,21 +87,19 @@ const FormLayout = () => {
     data.append('warna', formData.warna);
     data.append('diskon', formData.diskon);
     data.append('berat', formData.berat);
-    Array.from(selectedFiles).forEach((file, index) =>
-      data.append('img', file)
-    );
+    Array.from(selectedFiles).forEach((file, index) => data.append('img', file));
 
     try {
+      const token = Cookies.get('access_token');
       const response = await axios.put(
         `${import.meta.env.VITE_API_BACKEND}/api/posts/${id}`,
         data,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Access-Control-Allow-Origin': '*',
-            'ngrok-skip-browser-warning': '69420',
+            Authorization: `Bearer ${token}`
           },
-          withCredentials: true,
+          withCredentials: true
         }
       );
       Swal.fire({
@@ -130,7 +109,7 @@ const FormLayout = () => {
         confirmButtonColor: 'green',
         cancelButtonColor: '#3085d6',
         confirmButtonText: 'Oke',
-        cancelButtonText: 'Lihat Barang',
+        cancelButtonText: 'Lihat Barang'
       }).then((result) => {
         if (!result.isConfirmed) {
           location.href = `${import.meta.env.VITE_API_CLIENT}/toko/katalog/${id}`;
@@ -142,9 +121,7 @@ const FormLayout = () => {
   };
 
   const removeFile = (index) => {
-    const newSelectedFiles = Array.from(selectedFiles).filter(
-      (_, i) => i !== index
-    );
+    const newSelectedFiles = Array.from(selectedFiles).filter((_, i) => i !== index);
     setSelectedFiles(newSelectedFiles);
   };
 
@@ -155,17 +132,13 @@ const FormLayout = () => {
         <div className="flex flex-col gap-9 w-full">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
-                Edit Katalog
-              </h3>
+              <h3 className="font-medium text-black dark:text-white">Edit Katalog</h3>
             </div>
             <form onSubmit={handleSubmit}>
               <div className="p-6.5">
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Nama Barang
-                    </label>
+                    <label className="mb-2.5 block text-black dark:text-white">Nama Barang</label>
                     <input
                       type="text"
                       placeholder="Nama Barang"
@@ -180,9 +153,7 @@ const FormLayout = () => {
 
                 <div className="flex flex-col lg:flex-row lg:gap-6">
                   <div className="mb-4.5 w-full md:w-1/2">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Harga
-                    </label>
+                    <label className="mb-2.5 block text-black dark:text-white">Harga</label>
                     <input
                       type="number"
                       placeholder="Harga Barang"
@@ -194,9 +165,7 @@ const FormLayout = () => {
                     />
                   </div>
                   <div className="mb-4.5 w-full md:w-1/2">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Diskon
-                    </label>
+                    <label className="mb-2.5 block text-black dark:text-white">Diskon</label>
                     <input
                       type="number"
                       placeholder="Diskon Barang"
@@ -210,9 +179,7 @@ const FormLayout = () => {
                 </div>
 
                 <div className="mb-4.5 w-full">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Stok
-                  </label>
+                  <label className="mb-2.5 block text-black dark:text-white">Stok</label>
                   <input
                     type="text"
                     placeholder="Stok Barang"
@@ -225,9 +192,7 @@ const FormLayout = () => {
                 </div>
 
                 <div className="mb-4.5">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Kategori
-                  </label>
+                  <label className="mb-2.5 block text-black dark:text-white">Kategori</label>
                   <div className="relative z-20 bg-transparent dark:bg-form-input">
                     <select
                       name="kategori"
@@ -241,29 +206,16 @@ const FormLayout = () => {
                       }`}
                       required
                     >
-                      <option
-                        value=""
-                        disabled
-                        className="text-body dark:text-bodydark"
-                      >
+                      <option value="" disabled className="text-body dark:text-bodydark">
                         Pilih Kategori Barang
                       </option>
-                      <option
-                        value="1"
-                        className="text-body dark:text-bodydark"
-                      >
+                      <option value="1" className="text-body dark:text-bodydark">
                         Bak
                       </option>
-                      <option
-                        value="2"
-                        className="text-body dark:text-bodydark"
-                      >
+                      <option value="2" className="text-body dark:text-bodydark">
                         Box
                       </option>
-                      <option
-                        value="3"
-                        className="text-body dark:text-bodydark"
-                      >
+                      <option value="3" className="text-body dark:text-bodydark">
                         Sparepart
                       </option>
                     </select>
@@ -290,9 +242,7 @@ const FormLayout = () => {
                 </div>
 
                 <div className="mb-4.5">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Deskripsi
-                  </label>
+                  <label className="mb-2.5 block text-black dark:text-white">Deskripsi</label>
                   <textarea
                     rows={9}
                     placeholder="Deskripsi Barang"
@@ -305,9 +255,7 @@ const FormLayout = () => {
                 </div>
 
                 <div className="mb-4.5">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Warna Barang
-                  </label>
+                  <label className="mb-2.5 block text-black dark:text-white">Warna Barang</label>
                   <input
                     placeholder="Warna"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -319,9 +267,7 @@ const FormLayout = () => {
                 </div>
 
                 <div className="mb-4.5">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Berat Barang
-                  </label>
+                  <label className="mb-2.5 block text-black dark:text-white">Berat Barang</label>
                   <input
                     placeholder="Berat (kg)"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -333,9 +279,7 @@ const FormLayout = () => {
                 </div>
 
                 <div className="mb-6">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Gambar
-                  </label>
+                  <label className="mb-2.5 block text-black dark:text-white">Gambar</label>
                   <div className="flex flex-row items-center">
                     <input
                       type="file"
@@ -352,9 +296,7 @@ const FormLayout = () => {
                     >
                       Choose file
                     </label>
-                    <label className="text-sm text-slate-500">
-                      Upload File
-                    </label>
+                    <label className="text-sm text-slate-500">Upload File</label>
                   </div>
                   <div className="flex flex-wrap mt-6 gap-2">
                     {Array.from(selectedFiles).map((file, index) => (
