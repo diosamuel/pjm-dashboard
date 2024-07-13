@@ -51,7 +51,7 @@ const FormLayout = () => {
     const urlToFile = async (urls) => {
       // urls is an array of image links
       const filePromises = urls.map(async (url) => {
-        const response = await axios.get(`${import.meta.env.VITE_API_BACKEND}/image/${url}`, {
+        const response = await axios.get(`${import.meta.env.VITE_API_BACKEND}/api/images/${url}`, {
           responseType: 'blob'
         });
         const data = response.data;
