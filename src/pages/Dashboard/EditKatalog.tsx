@@ -49,7 +49,6 @@ const FormLayout = () => {
 
   useEffect(() => {
     const urlToFile = async (urls) => {
-      // urls is an array of image links
       const filePromises = urls.map(async (url) => {
         const response = await axios.get(`${import.meta.env.VITE_API_BACKEND}/api/images/${url}`, {
           responseType: 'blob'
@@ -64,13 +63,18 @@ const FormLayout = () => {
     };
 
     const fetchData = async () => {
-      const response = await axios.get(`${import.meta.env.VITE_API_BACKEND}/api/posts/${id}`);
-      let { kategori } = response.data;
-      let resKategori =
-        kategori === 'bak' ? 1 : kategori === 'box' ? 2 : kategori === 'sparepart' ? 3 : 0;
-      let fileImage = await urlToFile(response.data.images);
-      setSelectedFiles(fileImage);
-      setFormData({ ...response.data, kategori: resKategori });
+      try{
+        const response = await axios.get(`${import.meta.env.VITE_API_BACKEND}/api/posts/${id}`);
+        let { kategori } = response.data;
+        let resKategori =
+          kategori === 'bak' ? 1 : kategori === 'box' ? 2 : kategori === 'sparepart' ? 3 : 0;
+        let fileImage = await urlToFile(response.data.images);
+        setSelectedFiles(fileImage);
+        console.log(fileImage)
+        setFormData({ ...response.data, kategori: resKategori });
+      }catch(err){
+        console.log("Message Error: "+err)
+      }
     };
 
     fetchData();

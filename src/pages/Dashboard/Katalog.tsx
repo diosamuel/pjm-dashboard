@@ -49,6 +49,10 @@ const Katalog: React.FC = () => {
         });
 
         setcsvData({ row, column });
+
+        const tester = await axios.get(`${import.meta.env.VITE_API_BACKEND}/api/images/compress_1721746952085image%209.png`)
+
+        console.log(tester)
       } catch (error) {
         setError(error);
       } finally {
