@@ -80,7 +80,7 @@ const Home: React.FC = () => {
     const productImage = data.find((d) => d.id === product.id).images[0];
     return (
       <img
-        src={`${import.meta.env.VITE_API_BACKEND}/api/images/${productImage}`}
+        src={`${import.meta.env.VITE_API_BACKEND}/images/${productImage}`}
         className="w-52 h-52 object-cover object-center rounded shadow-2 border-round"
       />
     );

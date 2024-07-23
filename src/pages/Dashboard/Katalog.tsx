@@ -49,10 +49,6 @@ const Katalog: React.FC = () => {
         });
 
         setcsvData({ row, column });
-
-        const tester = await axios.get(`${import.meta.env.VITE_API_BACKEND}/api/images/compress_1721746952085image%209.png`)
-
-        console.log(tester)
       } catch (error) {
         setError(error);
       } finally {
@@ -65,7 +61,7 @@ const Katalog: React.FC = () => {
   const imageBodyTemplate = (product) => {
     return (
       <img
-        src={`${import.meta.env.VITE_API_BACKEND}/api/images/${product.images[0]}`}
+        src={`${import.meta.env.VITE_API_BACKEND}/images/${product.images[0]}`}
         alt={product.images[0]}
         className="w-52 h-40 object-cover object-center rounded shadow-2 border-round"
       />

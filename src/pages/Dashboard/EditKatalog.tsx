@@ -50,7 +50,7 @@ const FormLayout = () => {
   useEffect(() => {
     const urlToFile = async (urls) => {
       const filePromises = urls.map(async (url) => {
-        const response = await axios.get(`${import.meta.env.VITE_API_BACKEND}/api/images/${url}`, {
+        const response = await axios.get(`${import.meta.env.VITE_API_BACKEND}/images/${url}`, {
           responseType: 'blob'
         });
         const data = response.data;
@@ -70,7 +70,6 @@ const FormLayout = () => {
           kategori === 'bak' ? 1 : kategori === 'box' ? 2 : kategori === 'sparepart' ? 3 : 0;
         let fileImage = await urlToFile(response.data.images);
         setSelectedFiles(fileImage);
-        console.log(fileImage)
         setFormData({ ...response.data, kategori: resKategori });
       }catch(err){
         console.log("Message Error: "+err)
