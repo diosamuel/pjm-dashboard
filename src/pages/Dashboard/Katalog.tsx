@@ -28,7 +28,6 @@ const Katalog: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_BACKEND}/api/posts`);
-
         setData(response.data);
         setQuantity({
           box: response.data.filter((katalog) => katalog.kategori == 'box').length,
@@ -94,14 +93,18 @@ const Katalog: React.FC = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const token = Cookies.get('access_token');
-        await axios.delete(`${import.meta.env.VITE_API_BACKEND}/api/posts/${product.id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
-          withCredentials: true
-        });
-        Swal.fire('Sukses menghapus', '', 'success');
-        location.reload();
+        try {
+          await axios.delete(`${import.meta.env.VITE_API_BACKEND}/api/posts/${product.id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            },
+            withCredentials: true
+          });
+          Swal.fire('Sukses menghapus', '', 'success');
+          location.reload();
+        } catch (err) {
+          Swal.fire('Barang sudah tidak ada', '', 'success');
+        }
       }
     });
   };

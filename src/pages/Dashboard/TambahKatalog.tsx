@@ -5,6 +5,7 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import Cookies from 'js-cookie';
+import { Dropzone, FileMosaic } from '@files-ui/react';
 // import 'dotenv/config'
 
 const FormLayout = () => {
@@ -15,7 +16,15 @@ const FormLayout = () => {
     setIsOptionSelected(true);
   };
 
-  const [selectedFiles, setSelectedFiles] = useState<any>([]);
+  const [files, setFiles] = useState([]);
+  const updateFiles = (incommingFiles) => {
+    setFiles(incommingFiles);
+  };
+  const removeFile = (id) => {
+    setFiles(files.filter((x) => x.id !== id));
+  };
+
+  const [submitLoading, setLoading] = useState<any>(false);
   const [formData, setFormData] = useState<any>({
     nama: 'Bak Pickup Toyota Hilux',
     deskripsi:
@@ -36,21 +45,10 @@ const FormLayout = () => {
     }));
   };
 
-  const handleFileChange = (event) => {
-    if (event.target.files.length > 5) {
-      Swal.fire({
-        text: `Gambar tidak boleh lebih dari 5!`,
-        icon: 'error',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Oke'
-      });
-    } else {
-      setSelectedFiles(event.target.files);
-    }
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    setLoading(true);
     const data = new FormData();
     data.append('nama', formData.nama);
     data.append('deskripsi', formData.deskripsi);
@@ -60,8 +58,8 @@ const FormLayout = () => {
     data.append('diskon', formData.diskon);
     data.append('warna', formData.warna);
     data.append('berat', formData.berat);
-    Array.from(selectedFiles).forEach((file, index) => {
-      data.append('img', file);
+    Array.from(files).forEach((file, index) => {
+      data.append('img', file.file);
     });
 
     try {
@@ -74,18 +72,7 @@ const FormLayout = () => {
         // withCredentials: true
       });
 
-      console.log('File uploaded successfully:', response.data);
-      setFormData({
-        nama: '',
-        deskripsi: '',
-        kategori: '',
-        stok: '',
-        harga: '',
-        diskon: '',
-        warna: '',
-        berat: ''
-      });
-      setSelectedFiles([]);
+      setLoading(false);
       Swal.fire({
         text: `Sukses menambahkan ${response.data.nama}`,
         icon: 'success',
@@ -93,6 +80,7 @@ const FormLayout = () => {
         confirmButtonText: 'Oke'
       });
     } catch (error) {
+      setLoading(false);
       Swal.fire({
         text: `Error, muat ulang`,
         icon: 'warning'
@@ -100,11 +88,6 @@ const FormLayout = () => {
       console.error('Error uploading file:', error);
       throw error;
     }
-  };
-
-  const removeFile = (index) => {
-    const newSelectedFiles = Array.from(selectedFiles).filter((_, i) => i !== index);
-    setSelectedFiles(newSelectedFiles);
   };
 
   return (
@@ -263,65 +246,21 @@ const FormLayout = () => {
 
                 <div className="mb-6">
                   <label className="mb-2.5 block text-black dark:text-white">Gambar</label>
-                  <div className="flex flex-row items-center">
-                    <input
-                      type="file"
-                      id="custom-input"
-                      accept=".jpg, .jpeg, .png"
-                      onChange={handleFileChange}
-                      hidden
-                      multiple
-                    />
-                    <label
-                      htmlFor="custom-input"
-                      className="block text-sm mr-4 py-2 px-4 rounded-md border-0 font-semibold bg-blue-800 text-white cursor-pointer"
-                    >
-                      Choose file
-                    </label>
-                    <label className="text-sm text-slate-500">Upload File</label>
-                  </div>
-                  <div className="flex flex-wrap mt-6 gap-2">
-                    {Array.from(selectedFiles).map((file, index) => (
-                      <div className="flex" key={index}>
-                        <img
-                          src={URL.createObjectURL(file)}
-                          className="w-52 h-56 h-56 object-cover shadow border rounded"
-                        />
-                        <button
-                          className="absolute text-white bg-red-200 text-red-600 font-medium p-1 rounded-full m-2"
-                          onClick={(ev) => {
-                            event.preventDefault();
-                            removeFile(index);
-                          }}
-                        >
-                          <svg
-                            className="w-5 h-5 text-red-600"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    ))}
+                  <div>
+                    <Dropzone onChange={updateFiles} value={files} maxFiles={5} accept={'image/*'}>
+                      {files.map((file) => (
+                        <FileMosaic key={file.id} {...file} onDelete={removeFile} info preview />
+                      ))}
+                    </Dropzone>
                   </div>
                 </div>
 
                 <button
                   className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
                   type="submit"
+                  disabled={submitLoading}
                 >
-                  Tambah Katalog
+                  {submitLoading ? 'Loading' : 'Tambah Katalog'}
                 </button>
               </div>
             </form>

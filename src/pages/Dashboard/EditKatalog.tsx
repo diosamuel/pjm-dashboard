@@ -6,12 +6,11 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import Cookies from 'js-cookie';
-
-// import 'dotenv/config'
+import { Dropzone, FileMosaic } from '@files-ui/react';
 
 const FormLayout = () => {
   const { id } = useParams();
-
+  const [submitLoading, setLoading] = useState<any>(false);
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
   const changeTextColor = () => setIsOptionSelected(true);
   const [selectedFiles, setSelectedFiles] = useState<any>([]);
@@ -34,28 +33,32 @@ const FormLayout = () => {
     }));
   };
 
-  const handleFileChange = (event) => {
-    if (event.target.files.length > 5) {
-      Swal.fire({
-        text: `Gambar tidak boleh lebih dari 5!`,
-        icon: 'error',
-        confirmButtonColor: 'green',
-        confirmButtonText: 'Mengerti'
-      });
-    } else {
-      setSelectedFiles(event.target.files);
-    }
+  const [files, setFiles] = useState([]);
+  const updateFiles = (incommingFiles) => {
+    setFiles(incommingFiles);
+  };
+  const removeFile = (id) => {
+    setFiles(files.filter((x) => x.id !== id));
   };
 
   useEffect(() => {
     const urlToFile = async (urls) => {
-      const filePromises = urls.map(async (url) => {
+      const filePromises = urls.map(async (url,index) => {
         const response = await axios.get(`${import.meta.env.VITE_API_BACKEND}/images/${url}`, {
           responseType: 'blob'
         });
         const data = response.data;
-        const metadata = { type: 'image/png' };
-        const file = new File([data], `${url}.png`, metadata);
+        const metadata = { type: 'image/jpeg' };
+        const fileBinary = new File([data], `${url}.jpeg`, metadata);
+        let { name, size, type } = fileBinary
+        let file = {
+          id:index,
+          name,
+          size,
+          type,
+          file:fileBinary,
+          valid:true
+        }
         return file;
       });
       const files = await Promise.all(filePromises);
@@ -64,13 +67,14 @@ const FormLayout = () => {
 
     const fetchData = async () => {
       try{
+        
         const response = await axios.get(`${import.meta.env.VITE_API_BACKEND}/api/posts/${id}`);
         let { kategori } = response.data;
-        let resKategori =
-          kategori === 'bak' ? 1 : kategori === 'box' ? 2 : kategori === 'sparepart' ? 3 : 0;
+        let resKategori = kategori === 'bak' ? 1 : kategori === 'box' ? 2 : kategori === 'sparepart' ? 3 : 0;
         let fileImage = await urlToFile(response.data.images);
-        setSelectedFiles(fileImage);
+        setFiles(fileImage);
         setFormData({ ...response.data, kategori: resKategori });
+
       }catch(err){
         console.log("Message Error: "+err)
       }
@@ -81,6 +85,8 @@ const FormLayout = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    setLoading(true);
     const data = new FormData();
     data.append('nama', formData.nama);
     data.append('deskripsi', formData.deskripsi);
@@ -90,7 +96,7 @@ const FormLayout = () => {
     data.append('warna', formData.warna);
     data.append('diskon', formData.diskon);
     data.append('berat', formData.berat);
-    Array.from(selectedFiles).forEach((file, index) => data.append('img', file));
+    Array.from(files).forEach((file, index) => data.append('img', file.file));
 
     try {
       const token = Cookies.get('access_token');
@@ -105,6 +111,7 @@ const FormLayout = () => {
           withCredentials: true
         }
       );
+      setLoading(false);
       Swal.fire({
         text: `Sukses Memperbarui ${response.data.nama}`,
         icon: 'success',
@@ -119,13 +126,14 @@ const FormLayout = () => {
         }
       });
     } catch (error) {
+      setLoading(false);
+      Swal.fire({
+        text: `Error, muat ulang`,
+        icon: 'warning'
+      });
+      console.error('Error uploading file:', error);
       throw error;
     }
-  };
-
-  const removeFile = (index) => {
-    const newSelectedFiles = Array.from(selectedFiles).filter((_, i) => i !== index);
-    setSelectedFiles(newSelectedFiles);
   };
 
   return (
@@ -283,66 +291,21 @@ const FormLayout = () => {
 
                 <div className="mb-6">
                   <label className="mb-2.5 block text-black dark:text-white">Gambar</label>
-                  <div className="flex flex-row items-center">
-                    <input
-                      type="file"
-                      id="custom-input"
-                      accept=".jpg, .jpeg, .png"
-                      onChange={handleFileChange}
-                      hidden
-                      multiple
-                      required
-                    />
-                    <label
-                      htmlFor="custom-input"
-                      className="block text-sm mr-4 py-2 px-4 rounded-md border-0 font-semibold bg-blue-800 text-white cursor-pointer"
-                    >
-                      Choose file
-                    </label>
-                    <label className="text-sm text-slate-500">Upload File</label>
-                  </div>
-                  <div className="flex flex-wrap mt-6 gap-2">
-                    {Array.from(selectedFiles).map((file, index) => (
-                      <div className="flex" key={index}>
-                        <img
-                          src={URL.createObjectURL(file)}
-                          className="w-52 h-56 h-56 object-cover shadow border rounded"
-                        />
-                        <button
-                          className="absolute text-white bg-red-200 text-red-600 font-medium p-1 rounded-full m-2"
-                          onClick={(ev) => {
-                            event.preventDefault();
-                            removeFile(index);
-                          }}
-                        >
-                          <svg
-                            className="w-5 h-5 text-red-600"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    ))}
+                  <div>
+                    <Dropzone onChange={updateFiles} value={files} maxFiles={5} accept={'image/*'}>
+                      {files.map((file) => (
+                        <FileMosaic key={file.id} {...file} onDelete={removeFile} info preview />
+                      ))}
+                    </Dropzone>
                   </div>
                 </div>
 
                 <button
                   className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
                   type="submit"
+                  disabled={submitLoading}
                 >
-                  Edit Katalog
+                  {submitLoading ? 'Loading' : 'Edit Katalog'}
                 </button>
               </div>
             </form>
