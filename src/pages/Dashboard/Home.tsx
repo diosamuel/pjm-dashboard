@@ -11,7 +11,7 @@ import exportToCsv from '../../js/exportToCsv';
 const Home: React.FC = () => {
   const [data, setData] = useState([]);
   const [stats, setStats] = useState([]);
-  const [quantity, setQuantity] = useState({ box: 0, bak: 0, sparepart: 0 });
+  // const [quantity, setQuantity] = useState({ box: 0, bak: 0, sparepart: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [csvData, setCsvData] = useState({ row: [], column: '' });
@@ -35,7 +35,7 @@ const Home: React.FC = () => {
 
         integrateStatsWithData(postsData, statsData);
         prepareCsvData(postsData);
-        calculateQuantities(postsData);
+        // calculateQuantities(postsData);
       } catch (err) {
         setError(err);
       } finally {
@@ -59,13 +59,13 @@ const Home: React.FC = () => {
     setCsvData({ row: rowData, column: columnHeaders });
   };
 
-  const calculateQuantities = (postsData) => {
-    const boxCount = postsData.filter((item) => item.kategori === 'box').length;
-    const bakCount = postsData.filter((item) => item.kategori === 'bak').length;
-    const sparepartCount = postsData.filter((item) => item.kategori === 'sparepart').length;
+  // const calculateQuantities = (postsData) => {
+  //   const boxCount = postsData.filter((item) => item.kategori === 'box').length;
+  //   const bakCount = postsData.filter((item) => item.kategori === 'bak').length;
+  //   const sparepartCount = postsData.filter((item) => item.kategori === 'sparepart').length;
 
-    setQuantity({ box: boxCount, bak: bakCount, sparepart: sparepartCount });
-  };
+  //   setQuantity({ box: boxCount, bak: bakCount, sparepart: sparepartCount });
+  // };
 
   const tombolAksiTemplate = (product) => (
     <a
@@ -118,7 +118,7 @@ const Home: React.FC = () => {
 
   return (
     <DefaultLayout>
-      <InfoKatalog quantity={quantity} />
+      {/*<InfoKatalog quantity={quantity} />*/}
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
         <div className="col-span-12">
           <ChartTwo
