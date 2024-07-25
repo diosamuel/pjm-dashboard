@@ -26,15 +26,14 @@ const FormLayout = () => {
 
   const [submitLoading, setLoading] = useState<any>(false);
   const [formData, setFormData] = useState<any>({
-    nama: 'Bak Pickup Toyota Hilux',
-    deskripsi:
-      'Bak pickup ini dirancang untuk keperluan angkut berat dengan kekuatan yang luar biasa. Terbuat dari bahan berkualitas tinggi, bak ini tahan lama dan anti karat. Sangat cocok untuk berbagai kebutuhan bisnis dan pribadi.',
-    kategori: '2',
-    stok: '50',
-    harga: '7000000',
-    diskon: '500000',
-    warna: 'Putih',
-    berat: '200 kg'
+    nama: '',
+    deskripsi:'',
+    kategori: '',
+    stok: '',
+    harga: '',
+    diskon: '',
+    warna: '',
+    berat: ''
   });
 
   const handleInputChange = (event) => {
