@@ -246,7 +246,7 @@ const FormLayout = () => {
                 <div className="mb-6">
                   <label className="mb-2.5 block text-black dark:text-white">Gambar</label>
                   <div>
-                    <Dropzone onChange={updateFiles} value={files} maxFiles={5} accept={'image/*'}>
+                    <Dropzone onChange={updateFiles} value={files} maxFiles={10} accept={'image/*'}>
                       {files.map((file) => (
                         <FileMosaic key={file.id} {...file} onDelete={removeFile} info preview />
                       ))}

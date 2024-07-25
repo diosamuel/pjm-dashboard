@@ -33,7 +33,8 @@ const Home: React.FC = () => {
         setStats(statsData);
 
         integrateStatsWithData(postsData, statsData);
-        prepareCsvData(postsData);
+
+        prepareCsvData(statsData);
         // calculateQuantities(postsData);
       } catch (err) {
         throw err
@@ -55,7 +56,9 @@ const Home: React.FC = () => {
 
   const prepareCsvData = (postsData) => {
     const columnHeaders = Object.keys(postsData[0]);
-    const rowData = postsData.map((post) => Object.values(post));
+    const rowData = postsData.map((post) => {
+      return Object.values(post)
+    });
     setCsvData({ row: rowData, column: columnHeaders });
   };
 
@@ -109,7 +112,7 @@ const Home: React.FC = () => {
       <span className="text-xl text-900">Terakhir Dilihat</span>
       <button
         className="text-sm bg-blue-800 p-2 text-white rounded"
-        onClick={() => exportToCsv('terakhir_dilihat.csv', [csvData.column, ...csvData.row])}
+        onClick={() => exportToCsv(`terakhir_dilihat_${new Date()}.csv`, [csvData.column, ...csvData.row])}
       >
         Download CSV
       </button>

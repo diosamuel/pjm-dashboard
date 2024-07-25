@@ -38,9 +38,10 @@ const Katalog: React.FC = () => {
         let column = Object.keys(response.data[0]);
         let row = [];
         response.data.forEach((res) => {
+          delete res["deskripsi"]
           row.push(Object.values(res));
         });
-
+        column.splice(2,1)
         setcsvData({ row, column });
       } catch (error) {
         setError(error);
@@ -140,7 +141,7 @@ const Katalog: React.FC = () => {
       <span className="text-xl text-900">Semua Barang</span>
       <button
         className="text-sm bg-blue-800 p-2 text-white rounded"
-        onClick={() => exportToCsv('product.csv', [csvData.column, ...csvData.row])}
+        onClick={() => exportToCsv(`produk_${new Date()}.csv`, [csvData.column, ...csvData.row])}
       >
         Download CSV
       </button>
