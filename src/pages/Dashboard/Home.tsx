@@ -19,8 +19,6 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responsef = await fetch(`${import.meta.env.VITE_API_BACKEND}/api/posts`);
-        responsef.then(x=>console.log(x))
         
         const [postsResponse, statsResponse] = await Promise.all([
           axios.get(`${import.meta.env.VITE_API_BACKEND}/api/posts`),
@@ -31,12 +29,14 @@ const Home: React.FC = () => {
         const statsData = statsResponse.data;
 
         setData(postsData);
+
         setStats(statsData);
 
         integrateStatsWithData(postsData, statsData);
         prepareCsvData(postsData);
         // calculateQuantities(postsData);
       } catch (err) {
+        throw err
         setError(err);
       } finally {
         setLoading(false);
