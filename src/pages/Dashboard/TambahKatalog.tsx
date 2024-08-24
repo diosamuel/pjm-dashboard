@@ -117,7 +117,7 @@ const FormLayout = () => {
 
                 <div className="flex flex-col lg:flex-row lg:gap-6">
                   <div className="mb-4.5 w-full md:w-1/2">
-                    <label className="mb-2.5 block text-black dark:text-white">Harga Awal</label>
+                    <label className="mb-2.5 block text-black dark:text-white">Harga Asli</label>
                     <input
                       type="number"
                       placeholder="Harga Barang"
@@ -130,7 +130,7 @@ const FormLayout = () => {
                   </div>
 
                   <div className="mb-4.5 w-full md:w-1/2">
-                    <label className="mb-2.5 block text-black dark:text-white">Harga Diskon</label>
+                    <label className="mb-2.5 block text-black dark:text-white">Harga Setelah Diskon</label>
                     <input
                       type="number"
                       placeholder="Harga Barang"
@@ -145,7 +145,7 @@ const FormLayout = () => {
                 <div className="mb-4.5">
                   <label className="mb-2.5 block text-black dark:text-white">Stok</label>
                   <input
-                    type="text"
+                    type="number"
                     placeholder="Stok Barang"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     onChange={handleInputChange}
@@ -182,6 +182,9 @@ const FormLayout = () => {
                       </option>
                       <option value="3" className="text-body dark:text-bodydark">
                         Sparepart
+                      </option>
+                      <option value="4" className="text-body dark:text-bodydark">
+                        Bekas
                       </option>
                     </select>
                     <span className="absolute top-1/2 right-4 z-30 -translate-y-1/2">
@@ -259,7 +262,7 @@ const FormLayout = () => {
                   type="submit"
                   disabled={submitLoading}
                 >
-                  {submitLoading ? 'Loading' : 'Tambah Katalog'}
+                  {submitLoading ? 'Sedang Upload...' : 'Tambah Katalog'}
                 </button>
               </div>
             </form>
