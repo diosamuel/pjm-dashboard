@@ -158,7 +158,7 @@ const FormLayout = () => {
                     <label className="mb-2.5 block text-black dark:text-white">
                       Harga Setelah Diskon {formData.persenDiskon}%
                     </label>
-                    <p className='font-bold text-2xl text-white'>Rp{Number(formData.harga-((formData.persenDiskon/100)*formData.harga)).toLocaleString('id-ID')}</p>
+                    <p className='font-bold text-2xl text-black dark:text-white'>Rp{Number(formData.harga-((formData.persenDiskon/100)*formData.harga)).toLocaleString('id-ID')}</p>
                   </div>
                 <div className="mb-4.5">
                   <label className="mb-2.5 block text-black dark:text-white">Stok</label>
