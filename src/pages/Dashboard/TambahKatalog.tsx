@@ -37,12 +37,12 @@ const FormLayout = () => {
     berat: '',
     lazada: '',
     shopee: '',
-    tokopedia: '',
+    tokopedia: ''
   });
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    console.log(name,value)
+    console.log(name, value);
     setFormData((prevData) => ({
       ...prevData,
       [name]: value
@@ -55,11 +55,11 @@ const FormLayout = () => {
     setLoading(true);
     const data = new FormData();
     data.append('nama', formData.nama);
-    data.append('deskripsi', formData.deskripsi);
+    data.append('deskripsi', JSON.stringify(formData.deskripsi));
     data.append('kategori', formData.kategori);
     data.append('stok', formData.stok);
     data.append('harga', formData.harga);
-    data.append('diskon', formData.harga-((formData.persenDiskon/100)*formData.harga));
+    data.append('diskon', formData.harga - (formData.persenDiskon / 100) * formData.harga);
     data.append('warna', formData.warna);
     data.append('berat', formData.berat);
     data.append('lazada', formData.lazada);
@@ -125,7 +125,9 @@ const FormLayout = () => {
 
                 <div className="flex flex-col lg:flex-row lg:gap-6">
                   <div className="mb-4.5 w-full md:w-1/2">
-                    <label className="mb-2.5 block text-black dark:text-white">Harga Asli Barang</label>
+                    <label className="mb-2.5 block text-black dark:text-white">
+                      Harga Asli Barang
+                    </label>
                     <input
                       type="number"
                       placeholder="Harga Barang"
@@ -155,11 +157,16 @@ const FormLayout = () => {
                   </div>
                 </div>
                 <div className="mb-4.5 w-full">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Harga Setelah Diskon {formData.persenDiskon}%
-                    </label>
-                    <p className='font-bold text-2xl text-black dark:text-white'>Rp{Number(formData.harga-((formData.persenDiskon/100)*formData.harga)).toLocaleString('id-ID')}</p>
-                  </div>
+                  <label className="mb-2.5 block text-black dark:text-white">
+                    Harga Setelah Diskon {formData.persenDiskon}%
+                  </label>
+                  <p className="font-bold text-2xl text-black dark:text-white">
+                    Rp
+                    {Number(
+                      formData.harga - (formData.persenDiskon / 100) * formData.harga
+                    ).toLocaleString('id-ID')}
+                  </p>
+                </div>
                 <div className="mb-4.5">
                   <label className="mb-2.5 block text-black dark:text-white">Stok</label>
                   <input
@@ -286,7 +293,9 @@ const FormLayout = () => {
                     />
                   </div>
                   <div className="mb-4.5 md:w-1/2">
-                    <label className="mb-2.5 block text-black dark:text-white">Link Tokopedia</label>
+                    <label className="mb-2.5 block text-black dark:text-white">
+                      Link Tokopedia
+                    </label>
                     <input
                       placeholder="https://www.tokopedia.com/...."
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -296,7 +305,6 @@ const FormLayout = () => {
                       required
                     />
                   </div>
-
                 </div>
                 <div className="mb-6">
                   <label className="mb-2.5 block text-black dark:text-white">Gambar</label>
