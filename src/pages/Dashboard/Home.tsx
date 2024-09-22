@@ -84,6 +84,7 @@ const Home: React.FC = () => {
 
   const imageBodyTemplate = (product) => {
     const productImage = data.find((d) => d.id === product.id).images[0];
+    console.log(data)
     return (
       <img
         src={`${import.meta.env.VITE_API_BACKEND}/images/${productImage}`}

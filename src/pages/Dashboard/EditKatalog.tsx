@@ -76,7 +76,7 @@ const FormLayout = () => {
         let resKategori =
           kategori === 'bak' ? 1 : kategori === 'box' ? 2 : kategori === 'sparepart' ? 3 : 0;
         let fileImage = await urlToFile(response.data.images);
-        // setFiles(fileImage);
+        setFiles(fileImage);
         let { harga, diskon } = response.data;
         let getDiskonPercent = parseInt(((harga - diskon) / harga) * 100);
         setFormData({ ...response.data, kategori: resKategori, persenDiskon: getDiskonPercent });
@@ -172,7 +172,7 @@ const FormLayout = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-col lg:flex-row lg:gap-6">
+                <div className="flex flex-col md:flex-row md:gap-6">
                   <div className="mb-4.5 w-full md:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
                       Harga Asli Barang
@@ -285,7 +285,7 @@ const FormLayout = () => {
                     required></textarea>
                 </div>
 
-                <div className="flex flex-col lg:flex-row lg:gap-6">
+                <div className="flex flex-col md:flex-row md:gap-6">
                   <div className="mb-4.5 md:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">Warna Barang</label>
                     <input
@@ -310,7 +310,7 @@ const FormLayout = () => {
                     />
                   </div>
                 </div>
-                <div className="flex flex-col lg:flex-row lg:gap-6">
+                <div className="flex flex-col md:flex-row md:gap-6">
                   <div className="mb-4.5 md:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">Link Lazada</label>
                     <input

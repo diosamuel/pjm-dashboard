@@ -26,18 +26,29 @@ const FormLayout = () => {
 
   const [submitLoading, setLoading] = useState<any>(false);
   const [formData, setFormData] = useState<any>({
-    nama: '',
-    deskripsi: '',
+    nama: 'CYLYNDERHEAD DEKSEL TOYOTA HARDTOP 1F ORIGINAL',
+    deskripsi: `HARGA DAN STOK SEWAKTU-WAKTU BISA BERUBAH
+
+Spesifikasi :
+● Lokasi Kota Tangerang
+● Terima Tukar-Tambah Bak/Box
+● Bisa COD (CILEGON-SERANG-JABODETABEK)
+
+● Rakitan/Original = Original
+● Kondisi = Baru
+●Whats-App :
+081310893418
+Wa.me/6281310893418`,
     kategori: '',
-    stok: '',
-    harga: '',
+    stok: '1',
+    harga: '100000000',
     diskon: '',
-    persenDiskon: '',
-    warna: '',
-    berat: '',
-    lazada: '',
-    shopee: '',
-    tokopedia: ''
+    persenDiskon: '10',
+    warna: 'merah',
+    berat: '10 kg',
+    lazada: 'https://h5.lazada.co.id/products/bak-suzuki-carry-futura-putih-i7327784944.html',
+    shopee: 'https://shopee.co.id/BAK-CARRY-FUTURA-HITAM-i.481126946.23073243685',
+    tokopedia: 'https://www.tokopedia.com/pardijayamotor01/cylynderhead-deksel-toyota-hardtop-1f-original?extParam=whid%3D12528202%26src%3Dshop'
   });
 
   const handleInputChange = (event) => {
@@ -71,7 +82,7 @@ const FormLayout = () => {
 
     try {
       const token = Cookies.get('access_token');
-      const response = await axios.post(`${import.meta.env.VITE_API_BACKEND}/api/posts/`, data, {
+      const response = await axios.post(`${import.meta.env.VITE_API_BACKEND}/api/posts`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`
@@ -89,7 +100,7 @@ const FormLayout = () => {
     } catch (error) {
       setLoading(false);
       Swal.fire({
-        text: `Error, muat ulang`,
+        text: `Error pada sistem, muat ulang!`,
         icon: 'warning'
       });
       console.error('Error uploading file:', error);
@@ -123,7 +134,7 @@ const FormLayout = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-col lg:flex-row lg:gap-6">
+                <div className="flex flex-col md:flex-row md:gap-6">
                   <div className="mb-4.5 w-full md:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
                       Harga Asli Barang
@@ -243,7 +254,7 @@ const FormLayout = () => {
                     required></textarea>
                 </div>
 
-                <div className="flex flex-col lg:flex-row lg:gap-6">
+                <div className="flex flex-col md:flex-row md:gap-6">
                   <div className="mb-4.5 md:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">Warna Barang</label>
                     <input
@@ -268,7 +279,7 @@ const FormLayout = () => {
                     />
                   </div>
                 </div>
-                <div className="flex flex-col lg:flex-row lg:gap-6">
+                <div className="flex flex-col md:flex-row md:gap-6">
                   <div className="mb-4.5 md:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">Link Lazada</label>
                     <input
