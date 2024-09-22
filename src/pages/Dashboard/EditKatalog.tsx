@@ -118,7 +118,7 @@ const FormLayout = () => {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`
           },
-          withCredentials: true
+          // withCredentials: true
         }
       );
       setLoading(false);
