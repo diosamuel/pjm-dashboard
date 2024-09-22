@@ -99,7 +99,7 @@ const Katalog: React.FC = () => {
             headers: {
               Authorization: `Bearer ${token}`
             },
-            withCredentials: true
+            // withCredentials: true
           });
           Swal.fire('Sukses menghapus', '', 'success');
           location.reload();
