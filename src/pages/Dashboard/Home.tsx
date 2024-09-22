@@ -83,8 +83,8 @@ const Home: React.FC = () => {
   const hargaTemplate = (product) => `Rp${Number(product.harga).toLocaleString('id-ID')}`;
 
   const imageBodyTemplate = (product) => {
-    const productImage = data.find((d) => d.id === product.id).images[0];
-    console.log(data)
+    const productImage = data.find((d) => d.id === product.id)?.images[0];
+    console.log(productImage)
     return (
       <img
         src={`${import.meta.env.VITE_API_BACKEND}/images/${productImage}`}
