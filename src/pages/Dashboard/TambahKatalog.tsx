@@ -26,29 +26,18 @@ const FormLayout = () => {
 
   const [submitLoading, setLoading] = useState<any>(false);
   const [formData, setFormData] = useState<any>({
-    nama: 'CYLYNDERHEAD DEKSEL TOYOTA HARDTOP 1F ORIGINAL',
-    deskripsi: `HARGA DAN STOK SEWAKTU-WAKTU BISA BERUBAH
-
-Spesifikasi :
-● Lokasi Kota Tangerang
-● Terima Tukar-Tambah Bak/Box
-● Bisa COD (CILEGON-SERANG-JABODETABEK)
-
-● Rakitan/Original = Original
-● Kondisi = Baru
-●Whats-App :
-081310893418
-Wa.me/6281310893418`,
+    nama: '',
+    deskripsi: ``,
     kategori: '',
-    stok: '1',
-    harga: '100000000',
+    stok: '',
+    harga: '',
     diskon: '',
-    persenDiskon: '10',
-    warna: 'merah',
-    berat: '10 kg',
-    lazada: 'https://h5.lazada.co.id/products/bak-suzuki-carry-futura-putih-i7327784944.html',
-    shopee: 'https://shopee.co.id/BAK-CARRY-FUTURA-HITAM-i.481126946.23073243685',
-    tokopedia: 'https://www.tokopedia.com/pardijayamotor01/cylynderhead-deksel-toyota-hardtop-1f-original?extParam=whid%3D12528202%26src%3Dshop'
+    persenDiskon: '',
+    warna: '',
+    berat: '',
+    lazada: '',
+    shopee: '',
+    tokopedia: ''
   });
 
   const handleInputChange = (event) => {
