@@ -277,7 +277,7 @@ const FormLayout = () => {
                       onChange={handleInputChange}
                       name="lazada"
                       value={formData.lazada}
-                      required
+                      
                     />
                   </div>
 
@@ -289,7 +289,7 @@ const FormLayout = () => {
                       onChange={handleInputChange}
                       name="shopee"
                       value={formData.shopee}
-                      required
+                      
                     />
                   </div>
                   <div className="mb-4.5 md:w-1/2">
@@ -302,7 +302,7 @@ const FormLayout = () => {
                       onChange={handleInputChange}
                       name="tokopedia"
                       value={formData.tokopedia}
-                      required
+                      
                     />
                   </div>
                 </div>
