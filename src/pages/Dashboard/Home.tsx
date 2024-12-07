@@ -88,6 +88,7 @@ const Home: React.FC = () => {
     return (
       <img
         src={`${import.meta.env.VITE_API_BACKEND}/images/${productImage}`}
+        onError={(e) => { e.target.src = 'https://placehold.co/600x400?text=Blank+Image'; }}
         className="w-52 h-52 object-cover object-center rounded shadow-2 border-round"
       />
     );

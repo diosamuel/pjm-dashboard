@@ -47,26 +47,30 @@ const FormLayout = () => {
 
   useEffect(() => {
     const urlToFile = async (urls) => {
-      const filePromises = urls.map(async (url, index) => {
-        const response = await axios.get(`${import.meta.env.VITE_API_BACKEND}/images/${url}`, {
-          responseType: 'blob',
+      try {
+        const filePromises = urls.map(async (url, index) => {
+          const response = await axios.get(`${import.meta.env.VITE_API_BACKEND}/images/${url}`, {
+            responseType: 'blob'
+          });
+          const data = response.data;
+          const metadata = { type: 'image/jpeg' };
+          const fileBinary = new File([data], `${url}.jpeg`, metadata);
+          let { name, size, type } = fileBinary;
+          let file = {
+            id: index,
+            name,
+            size,
+            type,
+            file: fileBinary,
+            valid: true
+          };
+          return file;
         });
-        const data = response.data;
-        const metadata = { type: 'image/jpeg' };
-        const fileBinary = new File([data], `${url}.jpeg`, metadata);
-        let { name, size, type } = fileBinary;
-        let file = {
-          id: index,
-          name,
-          size,
-          type,
-          file: fileBinary,
-          valid: true
-        };
-        return file;
-      });
-      const files = await Promise.all(filePromises);
-      return files;
+        const files = await Promise.all(filePromises);
+        return files;
+      } catch {
+        return []
+      }
     };
 
     const fetchData = async () => {
@@ -82,8 +86,8 @@ const FormLayout = () => {
         setFormData({ ...response.data, kategori: resKategori, persenDiskon: getDiskonPercent });
         console.log(formData);
       } catch (err) {
-        console.log('Message Error: ' + err);
-        throw err
+        console.error('Message Error: ' + err);
+        throw err;
       }
     };
 
@@ -117,7 +121,7 @@ const FormLayout = () => {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`
-          },
+          }
           // withCredentials: true
         }
       );
@@ -319,7 +323,6 @@ const FormLayout = () => {
                       onChange={handleInputChange}
                       name="lazada"
                       value={formData.lazada}
-                      
                     />
                   </div>
 
@@ -331,7 +334,6 @@ const FormLayout = () => {
                       onChange={handleInputChange}
                       name="shopee"
                       value={formData.shopee}
-
                     />
                   </div>
                   <div className="mb-4.5 md:w-1/2">
@@ -344,7 +346,6 @@ const FormLayout = () => {
                       onChange={handleInputChange}
                       name="tokopedia"
                       value={formData.tokopedia}
-
                     />
                   </div>
                 </div>

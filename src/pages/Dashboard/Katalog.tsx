@@ -38,10 +38,10 @@ const Katalog: React.FC = () => {
         let column = Object.keys(response.data[0]);
         let row = [];
         response.data.forEach((res) => {
-          delete res["deskripsi"]
+          delete res['deskripsi'];
           row.push(Object.values(res));
         });
-        column.splice(2,1)
+        column.splice(2, 1);
         setcsvData({ row, column });
       } catch (error) {
         setError(error);
@@ -56,6 +56,9 @@ const Katalog: React.FC = () => {
     return (
       <img
         src={`${import.meta.env.VITE_API_BACKEND}/images/${product.images[0]}`}
+        onError={(e) => {
+          e.target.src = 'https://placehold.co/600x400?text=Blank+Image';
+        }}
         alt={product.images[0]}
         className="w-52 h-40 object-cover object-center rounded shadow-2 border-round"
       />
@@ -98,7 +101,7 @@ const Katalog: React.FC = () => {
           await axios.delete(`${import.meta.env.VITE_API_BACKEND}/api/posts/${product.id}`, {
             headers: {
               Authorization: `Bearer ${token}`
-            },
+            }
             // withCredentials: true
           });
           Swal.fire('Sukses menghapus', '', 'success');
@@ -115,21 +118,18 @@ const Katalog: React.FC = () => {
         <a
           href={`${import.meta.env.VITE_API_CLIENT}/toko/katalog/${product.id}`}
           target="_blank"
-          className="bg-green-500 text-sm text-white px-2 py-1 shadow rounded"
-        >
+          className="bg-green-500 text-sm text-white px-2 py-1 shadow rounded">
           Lihat
         </a>
         <a
           href={`/edit-katalog/${product.id}`}
-          className="bg-blue-800 text-sm text-white px-2 py-1 shadow rounded"
-        >
+          className="bg-blue-800 text-sm text-white px-2 py-1 shadow rounded">
           Edit
         </a>
         <a
           href="#"
           className="bg-red-500 text-sm text-white px-2 py-1 shadow rounded"
-          onClick={() => handleDeleteKatalog(product)}
-        >
+          onClick={() => handleDeleteKatalog(product)}>
           Hapus
         </a>
       </div>
@@ -141,8 +141,7 @@ const Katalog: React.FC = () => {
       <span className="text-xl text-900">Semua Barang</span>
       <button
         className="text-sm bg-blue-800 p-2 text-white rounded"
-        onClick={() => exportToCsv(`produk_${new Date()}.csv`, [csvData.column, ...csvData.row])}
-      >
+        onClick={() => exportToCsv(`produk_${new Date()}.csv`, [csvData.column, ...csvData.row])}>
         Download CSV
       </button>
     </div>
@@ -153,8 +152,7 @@ const Katalog: React.FC = () => {
       <p
         className={`w-fit px-1 text-sm rounded font-bold ${
           product.stok < 5 ? 'bg-yellow-400' : 'bg-green-600 text-white'
-        }`}
-      >
+        }`}>
         Sisa {product.stok}
       </p>
     );
@@ -171,14 +169,12 @@ const Katalog: React.FC = () => {
               header={header}
               paginator
               rows={10}
-              tableStyle={{ minWidth: '50rem' }}
-            >
+              tableStyle={{ minWidth: '50rem' }}>
               <Column
                 field="gambar"
                 header="Gambar"
                 body={imageBodyTemplate}
-                className="w-[30%]"
-              ></Column>
+                className="w-[30%]"></Column>
               <Column field="nama" header="Nama" sortable className="w-[25%]"></Column>
               <Column field="kategori" header="Kategori" sortable></Column>
               <Column field="harga" header="Harga" body={hargaTemplate} sortable></Column>
@@ -188,8 +184,7 @@ const Katalog: React.FC = () => {
                 header="Update"
                 body={tanggalTemplate}
                 className="w-[25%]"
-                sortable
-              ></Column>
+                sortable></Column>
               <Column body={tombolAksiTemplate} header="Aksi"></Column>
             </DataTable>
           </div>

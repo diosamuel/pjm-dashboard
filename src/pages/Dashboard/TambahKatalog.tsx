@@ -289,7 +289,6 @@ const FormLayout = () => {
                       onChange={handleInputChange}
                       name="shopee"
                       value={formData.shopee}
-                      
                     />
                   </div>
                   <div className="mb-4.5 md:w-1/2">
